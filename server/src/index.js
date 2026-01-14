@@ -7,6 +7,8 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.json());
+
 app.use(
   cors({
     origin: "http://localhost:3000", // Replace with your frontend's origin
@@ -15,9 +17,7 @@ app.use(
   })
 );
 
-app.all("/api/auth/*splat", toNodeHandler(auth));
-
-app.use(express.json());
+app.use("/api/auth", toNodeHandler(auth));
 
 app.get("/api/me", async (req, res) => {
   const session = await auth.api.getSession({
@@ -31,5 +31,5 @@ app.get("/health", (req, res) => {
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(`Example app listening on port ${process.env.PORT}`);
+  console.log(`app listening on port ${process.env.PORT}`);
 });
