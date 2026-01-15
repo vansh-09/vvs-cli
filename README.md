@@ -1,5 +1,5 @@
 # vvs-cli
 
-In Development untill furthur updates
+In Development until furthur updates
 
 ciao
