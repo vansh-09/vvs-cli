@@ -3,7 +3,7 @@ import { auth } from "./lib/auth.js";
 import cors from "cors";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({quiet: true});
 
 const app = express();
 
