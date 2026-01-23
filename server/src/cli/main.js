@@ -6,6 +6,7 @@ import figlet from "figlet";
 
 import { Command } from "commander";
 import { login, logout, whoami } from "./commands/auth/login.js";
+import { wakeUp } from "./commands/ai/wakeUp.js";
 
 dotenv.config({ quiet: true });
 async function main() {
@@ -16,8 +17,8 @@ async function main() {
         horizontalLayout: "default",
         verticalLayout: "default",
         font: "Standard",
-      })
-    )
+      }),
+    ),
   );
   console.log(chalk.red("A cli based AI tool \n"));
 
@@ -25,10 +26,10 @@ async function main() {
 
   program
     .version("0.0.1")
-    .description("VVS CLI - A cli based AI tool")
     .addCommand(login)
     .addCommand(logout)
-    .addCommand(whoami);
+    .addCommand(whoami)
+    .addCommand(wakeUp);
 
   program.action(() => {
     program.help();
