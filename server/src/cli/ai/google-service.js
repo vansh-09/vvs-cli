@@ -1,5 +1,5 @@
 import { google } from "@ai-sdk/google";
-import { streamText } from "ai";
+import { convertToModelMessages, streamText } from "ai";
 import { config } from "../../config/google.config.js";
 import chalk from "chalk";
 
@@ -7,7 +7,7 @@ export class AIService {
   constructor() {
     if (!config.googleApiKey) {
       throw new Error(
-        "Google Generative AI API key is not set. Please set the GOOGLE_GENERATIVE_AI_API_KEY environment variable."
+        "Google Generative AI API key is not set. Please set the GOOGLE_GENERATIVE_AI_API_KEY environment variable.",
       );
     }
 
@@ -67,7 +67,7 @@ export class AIService {
       (chunk) => {
         fullResponse += chunk;
       },
-      tools
+      tools,
     );
     return result.content;
   }
