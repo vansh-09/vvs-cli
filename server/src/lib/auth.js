@@ -1,7 +1,10 @@
+import dotenv from "dotenv";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { deviceAuthorization } from "better-auth/plugins";
 import prisma from "./db.js";
+
+dotenv.config({ quiet: true });
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {

@@ -4,7 +4,7 @@ import { text, isCancel, cancel, intro, outro } from "@clack/prompts";
 import { marked } from "marked";
 import { markedTerminal } from "marked-terminal";
 import { AIService } from "../ai/google-service.js";
-import { ChatService } from "../../service/chat-service.js";
+import { ChatService } from "../../service/chat.service.js";
 import { getStoredToken } from "../commands/auth/login.js";
 import prisma from "../../lib/db.js";
 import yoctoSpinner from "yocto-spinner";
@@ -159,14 +159,12 @@ async function getAIResponse(messages) {
     console.log(chalk.gray("-".repeat(60)));
     console.log("\n");
 
-    return result.content
+    return result.content;
   } catch (error) {
     spinner.error("Error getting AI response");
     throw error;
   }
 }
-
-
 
 async function updateConversationTitle(conversationId, title) {
   if (messageCount === 1) {

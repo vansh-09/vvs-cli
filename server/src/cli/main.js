@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import dotenv from "dotenv";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import chalk from "chalk";
 import figlet from "figlet";
 
@@ -8,7 +10,13 @@ import { Command } from "commander";
 import { login, logout, whoami } from "./commands/auth/login.js";
 import { wakeUp } from "./commands/ai/wakeUp.js";
 
-dotenv.config({ quiet: true });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({
+  quiet: true,
+  path: path.join(__dirname, "..", "..", ".env"),
+});
 async function main() {
   //Display banner
   console.log(

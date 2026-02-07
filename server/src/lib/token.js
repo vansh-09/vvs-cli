@@ -65,13 +65,13 @@ export async function requireAuth() {
 
   if (!token) {
     console.log(
-      chalk.red("Not Authenticated. Please run 'your-cli login' first.")
+      chalk.red("Not Authenticated. Please run 'vvs login' first.")
     );
     process.exit(1);
 
     if (await isTokenExpired(token)) {
       console.log(chalk.yellow("Session expired. Please login again."));
-      console.log(chalk.gray("run your-cli login \n"));
+      console.log(chalk.gray("run  login \n"));
       process.exit(1);
     }
   }

@@ -12,8 +12,15 @@ import yoctoSpinner from "yocto-spinner";
 import * as z from "zod/v4";
 import dotenv from "dotenv";
 import prisma from "../../../lib/db.js";
+import { fileURLToPath } from "node:url";
 
-dotenv.config({ quiet: true });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({
+  quiet: true,
+  path: path.join(__dirname, "..", "..", "..", "..", ".env"),
+});
 
 const DEMO_URL = "http://localhost:3005";
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
@@ -88,16 +95,16 @@ export async function requireAuth() {
 
   if (!token) {
     console.log(
-      chalk.red("❌ Not authenticated. Please run 'your-cli login' first.")
+      chalk.red("❌ Not authenticated. Please run 'vvs login' first."),
     );
     process.exit(1);
   }
 
   if (await isTokenExpired()) {
     console.log(
-      chalk.yellow("⚠️  Your session has expired. Please login again.")
+      chalk.yellow("⚠️  Your session has expired. Please login again."),
     );
-    console.log(chalk.gray("   Run: your-cli login\n"));
+    console.log(chalk.gray("   Run: 'vvs login'\n"));
     process.exit(1);
   }
 
@@ -124,7 +131,7 @@ export async function loginAction(opts) {
   if (!clientId) {
     logger.error("CLIENT_ID is not set in .env file");
     console.log(
-      chalk.red("\n❌ Please set GITHUB_CLIENT_ID in your .env file")
+      chalk.red("\n❌ Please set GITHUB_CLIENT_ID in your .env file"),
     );
     process.exit(1);
   }
@@ -167,7 +174,7 @@ export async function loginAction(opts) {
       logger.error(
         `Failed to request device authorization: ${
           error?.error_description || error?.message || "Unknown error"
-        }`
+        }`,
       );
 
       if (error?.status === 404) {
@@ -175,7 +182,7 @@ export async function loginAction(opts) {
         console.log(chalk.yellow("   Make sure your auth server is running."));
       } else if (error?.status === 400) {
         console.log(
-          chalk.red("\n❌ Bad request - check your CLIENT_ID configuration.")
+          chalk.red("\n❌ Bad request - check your CLIENT_ID configuration."),
         );
       }
 
@@ -197,8 +204,8 @@ export async function loginAction(opts) {
     console.log("");
     console.log(
       `Please visit: ${chalk.underline.blue(
-        verification_uri_complete || verification_uri
-      )}`
+        verification_uri_complete || verification_uri,
+      )}`,
     );
     console.log(`Enter code: ${chalk.bold.green(user_code)}`);
     console.log("");
@@ -218,16 +225,16 @@ export async function loginAction(opts) {
     console.log(
       chalk.gray(
         `Waiting for authorization (expires in ${Math.floor(
-          expires_in / 60
-        )} minutes)...`
-      )
+          expires_in / 60,
+        )} minutes)...`,
+      ),
     );
 
     const token = await pollForToken(
       authClient,
       device_code,
       clientId,
-      interval
+      interval,
     );
 
     if (token) {
@@ -236,10 +243,10 @@ export async function loginAction(opts) {
 
       if (!saved) {
         console.log(
-          chalk.yellow("\n⚠️  Warning: Could not save authentication token.")
+          chalk.yellow("\n⚠️  Warning: Could not save authentication token."),
         );
         console.log(
-          chalk.yellow("   You may need to login again on next use.")
+          chalk.yellow("   You may need to login again on next use."),
         );
       }
 
@@ -256,13 +263,15 @@ export async function loginAction(opts) {
         chalk.green(
           `✅ Login successful! Welcome ${
             session?.user?.name || session?.user?.email || "User"
-          }`
-        )
+          }`,
+        ),
       );
 
       console.log(chalk.gray(`\n📁 Token saved to: ${TOKEN_FILE}`));
       console.log(
-        chalk.gray("   You can now use AI commands without logging in again.\n")
+        chalk.gray(
+          "   You can now use AI commands without logging in again.\n",
+        ),
       );
     }
   } catch (err) {
@@ -281,7 +290,7 @@ async function pollForToken(authClient, deviceCode, clientId, initialInterval) {
     const poll = async () => {
       dots = (dots + 1) % 4;
       spinner.text = chalk.gray(
-        `Polling for authorization${".".repeat(dots)}${" ".repeat(3 - dots)}`
+        `Polling for authorization${".".repeat(dots)}${" ".repeat(3 - dots)}`,
       );
       if (!spinner.isSpinning) spinner.start();
 
@@ -299,7 +308,7 @@ async function pollForToken(authClient, deviceCode, clientId, initialInterval) {
 
         if (data?.access_token) {
           console.log(
-            chalk.bold.yellow(`Your access token: ${data.access_token}`)
+            chalk.bold.yellow(`Your access token: ${data.access_token}`),
           );
           spinner.stop();
           resolve(data);
@@ -405,7 +414,7 @@ export async function whoamiAction(opts) {
   console.log(
     chalk.bold.greenBright(`\n👤 User: ${user.name}
 📧 Email: ${user.email}
-👤 ID: ${user.id}`)
+👤 ID: ${user.id}`),
   );
 }
 
